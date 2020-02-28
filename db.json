@@ -1,0 +1,156 @@
+
+{
+"settings" : {
+       "sensor_settings" : {  
+                           "30001" : {"invoke":"false", "type" : "analog", "sensor_id":"30001", "class":"temp_30001",  "modbus_id":"90001" ,"delay" : 10, "read_scan_data_delay" : 30},   
+                           "30007" : {"invoke":"true", "type" : "digital", "sensor_id":"30007", "class":"alarm_1", "alarm_code": "T101", "modbus_id":"90001" ,"delay" : 1, "read_scan_data_delay" : 5},            
+                          "30004" : {"invoke":"false", "type" : "digital", "sensor_id":"30004", "class":"alarm_2", "alarm_code": "T102", "modbus_id":"90001" ,"delay" : 1, "read_scan_data_delay" : 5},
+                          "30005" : {"invoke":"true", "type" : "digital", "sensor_id":"30005", "class":"alarm_3",  "alarm_code": "T103", "modbus_id":"90001" ,"delay" : 1, "read_scan_data_delay" : 5},
+                          "30006" : {"invoke":"true", "type" : "digital", "sensor_id":"30006", "class":"alarm_4",  "alarm_code": "T104", "modbus_id":"90001" ,"delay" : 1, "read_scan_data_delay" : 5},
+                          "30008" : {"invoke":"false", "type" : "digital", "sensor_id":"30008", "class":"alarm_5",  "alarm_code": "T104", "modbus_id":"90001" ,"delay" : 1, "read_scan_data_delay" : 5},
+                          "30002" : {"invoke":"false", "type" : "modbus", "sensor_id":"30002", "class":"meter",  "modbus_id":"90001" ,"delay" : 5, "read_scan_data_delay" : 20},
+                          "30009" : {"invoke":"false", "type" : "modbus", "sensor_id":"30009", "class":"btu_meter",  "modbus_id":"90001" ,"delay" : 5, "read_scan_data_delay" : 20},
+                          "069bcc081a68a0832f123" : {"invoke":"true", "type" : "merged", "sensor_id":"069bcc081a68a0832f123", "class":"merged_all", "sensor_ids":["30001","30004","30005","30006","30007","30009"], "modbus_id":"90001" ,"delay" : 5, "read_scan_data_delay" : 20}
+              },
+              "common_processes":{
+                       "mqtt" : {"class" :"MyMQTTClass", "thread_type" : "stoppable_thread", "username" : "", "password" : "", "ip" : "54.171.239.121", "port" : 5020},
+                       "remote_settings" : {"class" :"remote_settings", "thread_type" : "stoppable_interval_thread", "delay" : 60},
+                       "rule_settings" : {"class" :"rule_settings", "thread_type" : "stoppable_interval_thread", "delay" : 60},
+                       "scheduler_settings" : {"class" :"scheduler_settings", "thread_type" : "stoppable_interval_thread", "delay" : 30},
+                       "asset_control" : {"class" :"asset_control", "thread_type" : "stoppable_interval_thread", "delay" : 10},
+                       "scheduler_task" : {"class" : "scheduler_task", "thread_type" : "stoppable_thread", "delay" : 120}
+                       
+              }, 
+      "modbus_conn_settings" : {
+                             "method" : "rtu",
+                            "port" : "/dev/ttyS1",
+                            "stopbits" : 1,
+                            "bytesize" : 8,
+                            "parity" : "N",
+                            "baudrate" : 9600
+             },
+       "modbus_ip_conn_settings" : {
+                             "ip" : "localhost",
+                            "port" : 502
+             },
+      "modbus_sensor_mapping" : {
+                          "90001" : {                          
+                     
+                                 "30002":  {
+                                              "unit_id" : "0x02",
+                                                "sensor_id" : "30002",
+                                                "type" : "energy",
+                                                "start_address" : "0x0064",
+                                                "length" : "0x076",
+                                                "param": {
+                                                       "wats_tot": {"address_pos" : 0, "length" : 2, "type" : "float"},
+                                                       "va_tot": {"address_pos" : 24, "length" : 2, "type" : "float"},
+                                                       "freq": {"address_pos" : 56, "length" : 2, "type" : "float"},
+                                                       "vln_avg": {"address_pos" : 40, "length" : 2, "type" : "float"},
+                                                       "vr_phase": {"address_pos" : 42, "length" : 2, "type" : "float"},
+                                                       "va_B_phase": {"address_pos" : 30, "length" : 2, "type" : "float"},
+                                                              "wh_rec": {"address_pos" : 58, "length" : 2, "type" : "float"},
+                                                              "wh_del": {"address_pos" : 62, "length" : 2, "type" : "float"}
+                                                       }
+                                               },
+                                               "30009":  {
+                                              "unit_id" : "0x01",
+                                                "sensor_id" : "30009",
+                                                "type" : "btu_meter",
+                                                "start_address" : "0x001",
+                                                "length" : "0x028",
+                                                "param": {
+                                                       "11": {"address_pos" : 4, "length" : 2, "type" : "float"},
+                                                       "12": {"address_pos" : 38, "length" : 2, "type" : "float"},
+                                                       "14": {"address_pos" : 36, "length" : 1, "type" : "int"},
+                                                       "13": {"address_pos" : 37, "length" : 1, "type" : "int"},
+                                                       "19": {"address_pos" : 0, "length" : 2, "type" : "float"},
+                                                       "20": {"address_pos" : 2, "length" : 2, "type" : "float"},
+                                                       "21": {"address_pos" : 6, "length" : 2, "type" : "float"},
+                                                       "22": {"address_pos" : 8, "length" : 2, "type" : "float"},
+                                                       "23": {"address_pos" : 10, "length" : 2, "type" : "float"},
+                                                       "24": {"address_pos" : 12, "length" : 2, "type" : "float"},
+                                                       "25": {"address_pos" : 14, "length" : 2, "type" : "float"},
+                                                       "26": {"address_pos" : 16, "length" : 2, "type" : "float"},
+                                                       "27": {"address_pos" : 18, "length" : 2, "type" : "float"},
+                                                       "28": {"address_pos" : 20, "length" : 2, "type" : "float"},
+                                                       "29": {"address_pos" : 22, "length" : 2, "type" : "float"},
+                                                       "30": {"address_pos" : 24, "length" : 2, "type" : "float"},
+                                                       "31": {"address_pos" : 26, "length" : 2, "type" : "float"},
+                                                       "32": {"address_pos" : 28, "length" : 2, "type" : "float"},
+                                                       "33": {"address_pos" : 30, "length" : 2, "type" : "float"},
+                                                       "34": {"address_pos" : 32, "length" : 2, "type" : "float"},
+                                                       "35": {"address_pos" : 34, "length" : 2, "type" : "float"}
+                                                       }
+                                               }
+                         
+                                    }
+            },
+      "analog_sensor_mapping" : {
+                          "30003" : {
+                                  "pin_no" : "P9_38",
+                                  "type" : "temperature",
+                                  "sensor_id" : "30003",
+                                  "param": "temp"
+                                 },
+                          "30001" : {
+                                  "pin_no" : "P9_35",
+                                  "type" : "temperature",
+                                  "sensor_id" : "30001",
+                                 "param": "16"
+                                 }
+            },
+      "digital_sensor_mapping":{
+                     "30004" : {
+                            "pin_no" : {"IN" : "P8_37"},
+                            "type" : "ALARM",
+                            "pin_type" : "IN",
+                            "sensor_id" : "30004",
+                            "param" : "4"                           
+                        },
+                        "30007" : {
+                            "pin_no" : {"IN" : "P8_33"},
+                            "type" : "ALARM",
+                            "pin_type" : "IN",
+                            "sensor_id" : "30007",
+                            "param" : "5"                           
+                        },"30005" : {
+                            "pin_no" : {"IN" : "P8_28"},
+                            "type" : "ALARM",
+                            "pin_type" : "IN",
+                            "sensor_id" : "30005",
+                            "param" : "6"                           
+                        },"30006" : {
+                            "pin_no" : {"IN" : "P8_27"},
+                            "type" : "ALARM",
+                            "pin_type" : "IN",
+                            "sensor_id" : "30006",
+                            "param" : "7"                           
+                        },"30008" : {
+                            "pin_no" : {"IN" : "P9_37", "OUT" : "P9_14"},
+                            "type" : "ALARM",
+                            "pin_type" : "OUT",
+                            "sensor_id" : "30008",
+                            "param" : "10"                          
+                        },
+                      
+                    "70057" : {
+                     "pin_no" : "P9_41",
+                     "mode" : "out",
+                     "sensor_id" : "70057",
+                    "schedule_on" : [{
+                                "week_ends" : "0 12 * * 6,0"
+                                 },{
+                                  "week_days" : "0 9 * * 1,2,3,4,5"
+                                }],
+                    "schedule_off" : [{
+                                 "week_ends" : "0 19 * * 6,0"
+                                  },{
+                                   "week_days" : "0 21 * * 1,2,3,4,5"
+                                 }]
+                            }
+            }
+            
+   }
+
+}
